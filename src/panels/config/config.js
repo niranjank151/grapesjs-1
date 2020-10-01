@@ -6,6 +6,7 @@ const ola = 'open-layers';
 const obl = 'open-blocks';
 const ful = 'fullscreen';
 const prv = 'preview';
+const redo = 'code:redo';
 
 export default {
   stylePrefix: 'pn-',
@@ -46,6 +47,12 @@ export default {
           className: 'fa fa-code',
           command: expt,
           attributes: { title: 'View code' }
+        },
+        {
+          id: redo,
+          className: 'fa fa-redo-alt',
+          command: redo,
+          attributes: { title: 'Redo' }
         }
       ]
     },
