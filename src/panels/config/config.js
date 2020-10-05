@@ -6,7 +6,7 @@ const ola = 'open-layers';
 const obl = 'open-blocks';
 const ful = 'fullscreen';
 const prv = 'preview';
-const redo = 'code:redo';
+const redo = 'core:undo';
 
 export default {
   stylePrefix: 'pn-',
@@ -49,8 +49,14 @@ export default {
           attributes: { title: 'View code' }
         },
         {
+          id: 'clear',
+          className: 'fa fa-trash',
+          command: 'core:canvas-clear',
+          attributes: { title: 'Clear' }
+        },
+        {
           id: redo,
-          className: 'fa fa-redo-alt',
+          className: 'fa fa-home',
           command: redo,
           attributes: { title: 'Redo' }
         }
