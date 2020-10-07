@@ -40544,7 +40544,9 @@ var ola = 'open-layers';
 var obl = 'open-blocks';
 var ful = 'fullscreen';
 var prv = 'preview';
-var redo = 'core:undo';
+var undo = 'core:undo';
+var ocd = 'core:open-code';
+var redo = 'core:redo';
 /* harmony default export */ __webpack_exports__["default"] = ({
   stylePrefix: 'pn-',
   // Default panels fa-sliders for features
@@ -40556,7 +40558,7 @@ var redo = 'core:undo';
     buttons: [{
       active: true,
       id: swv,
-      className: 'fa fa-square-o',
+      className: 'far fa-square',
       command: swv,
       context: swv,
       attributes: {
@@ -40594,10 +40596,24 @@ var redo = 'core:undo';
       }
     }, {
       id: redo,
-      className: 'fa fa-home',
+      className: 'fas fa-redo-alt',
       command: redo,
       attributes: {
         title: 'Redo'
+      }
+    }, {
+      id: undo,
+      className: 'fas fa-undo-alt',
+      command: undo,
+      attributes: {
+        title: 'Undo'
+      }
+    }, {
+      id: ocd,
+      className: 'fa fa-code',
+      command: ocd,
+      attributes: {
+        title: 'View code'
       }
     }]
   }, {
