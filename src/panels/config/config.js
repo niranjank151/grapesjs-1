@@ -73,12 +73,6 @@ export default {
           className: 'fa fa-code',
           command: ocd,
           attributes: { title: 'View code' }
-        },
-        {
-          id: redo,
-          className: 'fa fa-home',
-          command: redo,
-          attributes: { title: 'Redo' }
         }
       ]
     },
