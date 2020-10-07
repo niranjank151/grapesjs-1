@@ -6,7 +6,9 @@ const ola = 'open-layers';
 const obl = 'open-blocks';
 const ful = 'fullscreen';
 const prv = 'preview';
-const redo = 'core:undo';
+const undo = 'core:undo';
+const ocd = 'core:open-code';
+const redo = 'core:redo';
 
 export default {
   stylePrefix: 'pn-',
@@ -23,7 +25,7 @@ export default {
         {
           active: true,
           id: swv,
-          className: 'fa fa-square-o',
+          className: 'far fa-square',
           command: swv,
           context: swv,
           attributes: { title: 'View components' }
@@ -56,9 +58,21 @@ export default {
         },
         {
           id: redo,
-          className: 'fa fa-home',
+          className: 'fas fa-redo-alt',
           command: redo,
           attributes: { title: 'Redo' }
+        },
+        {
+          id: undo,
+          className: 'fas fa-undo-alt',
+          command: undo,
+          attributes: { title: 'Undo' }
+        },
+        {
+          id: ocd,
+          className: 'fa fa-code',
+          command: ocd,
+          attributes: { title: 'View code' }
         }
       ]
     },
