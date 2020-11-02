@@ -2,10 +2,11 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>GrapesJS</title>
+    <title>Editor</title>
     <link rel="stylesheet" href="dist/css/grapes.min.css">
     <script src="dist/grapes.min.js"></script>
     <link href="https://unpkg.com/grapesjs-component-code-editor.min.css" rel="stylesheet">
+  >
 <script src="https://unpkg.com/grapesjs-component-code-editor"></script>
 <script src="https://unpkg.com/grapesjs-plugin-forms"></script>
  
@@ -21,54 +22,7 @@
   <body>
     <div id="gjs" style="height:0px; overflow:hidden;">       
       </div>
-      <style>
-        .panel {
-          width: 90%;
-          max-width: 700px;
-          border-radius: 3px;
-          padding: 30px 20px;
-          margin: 150px auto 0px;
-          background-color: #d983a6;
-          box-shadow: 0px 3px 10px 0px rgba(0,0,0,0.25);
-          color:rgba(255,255,255,0.75);
-          font: caption;
-          font-weight: 100;
-        }
 
-        .welcome {
-          text-align: center;
-          font-weight: 100;
-          margin: 0px;
-        }
-
-        .logo {
-          width: 70px;
-          height: 70px;
-          vertical-align: middle;
-        }
-
-        .logo path {
-          pointer-events: none;
-          fill: none;
-          stroke-linecap: round;
-          stroke-width: 7;
-          stroke: #fff
-        }
-
-        .big-title {
-          text-align: center;
-          font-size: 3.5rem;
-          margin: 15px 0;
-        }
-
-        .description {
-          text-align: justify;
-          font-size: 1rem;
-          line-height: 1.5rem;
-        }
-
-      </style>
-    </div>
 
     <script type="text/javascript">
       var editor = grapesjs.init({
@@ -80,7 +34,11 @@
         plugins:['grapesjs-component-code-editor', 'grapesjs-plugin-forms'],
         pluginsOpts: {
         'grapesjs-component-code-editor': { /* options */ }
+      }, 
+      canvas:{
+styles:['./dist/css/custom.style.css']
       },
+     
         storageManager: { autoload: 0 },
         styleManager : {
           sectors: [{
@@ -111,21 +69,239 @@
           ],
         },
       });
+    //  editor.getComponents().add(`<link rel="stylesheet" href="./dist/css/custom.style.css" `);
+    editor.BlockManager.add('4 Columns', {
+    category: 'Basic',
+        label: '4 Columns',
+        attributes: {class:"gjs-fonts gjs-f-b3"},
+        content: `<div class='row'>
+        <div class='cell' ></div>
+        <div class='cell'></div>
+        <div class='cell'></div>
+        <div class='cell'></div>
+      </div>
+      <style>
+      .row{
+        display:table;
+        padding-top:10px;
+        padding-right:10px;
+        padding-bottom:10px;
+        padding-left:10px;
+        width:100%;
+      }
+      .cell{
+        width:8%;
+        display:table-cell;
+        height:75px;
+      }
+      @media (max-width: 768px){
+        .cell{
+          width:100%;
+          display:block;
+        }
+      }
+      </style>`
+      });
 
-      editor.BlockManager.add('testBlock', {
-        label: 'Block',
-        attributes: { class:'gjs-fonts gjs-f-b1' },
-        content: `<div style="padding-top:50px; padding-bottom:50px; text-align:center">Test block</div>`
-      })
+      editor.BlockManager.add('6 Columns', {
+        category: 'Basic',
+        label: '6 Columns',
+        attributes: {class:'gjs-fonts gjs-f-b3'},
+        content: `<div class='row'>
+        <div class='cell' ></div>
+        <div class='cell'></div>
+        <div class='cell'></div>
+        <div class='cell'></div>
+        <div class='cell'></div>
+        <div class='cell'></div>
+      </div>
+      <style>
+      .row{
+        display:table;
+        padding-top:10px;
+        padding-right:10px;
+        padding-bottom:10px;
+        padding-left:10px;
+        width:100%;
+      }
+      .cell{
+        width:8%;
+        display:table-cell;
+        height:75px;
+      }
+      @media (max-width: 768px){
+        .cell{
+          width:100%;
+          display:block;
+        }
+      }
+      </style>`
+      });
+      
+      editor.BlockManager.add('Nav Bar', {
+        category: 'Extra',
+        label: 'Navbar',
+        attributes: {class:'fa fa-bars'},
+        content: `<div data-gjs="navbar" class="navbar">
+  <div class="navbar-container">
+    <a href="/" class="navbar-brand"></a>
+    <div id="i25a" class="navbar-burger">
+      <div class="navbar-burger-line">
+      </div>
+      <div class="navbar-burger-line">
+      </div>
+      <div class="navbar-burger-line">
+      </div>
+    </div>
+    <div data-gjs="navbar-items" class="navbar-items-c">
+      <nav data-gjs="navbar-menu" class="navbar-menu">
+        <a href="#" class="navbar-menu-link">Home</a>
+        <a href="#" class="navbar-menu-link">About</a>
+        <a href="#" class="navbar-menu-link">Contact</a>
+      </nav>
+    </div>
+  </div>
+</div>
+<script>var items = document.querySelectorAll('#i25a');
+  for (var i = 0, len = items.length; i < len; i++) {
+    (function(){
+      var e,t=0,n=function(){
+        var e,t=document.createElement("void"),n={
+          transition:"transitionend",OTransition:"oTransitionEnd",MozTransition:"transitionend",WebkitTransition:"webkitTransitionEnd"};
+        for(e in n)if(void 0!==t.style[e])return n[e]}
+      (),r=function(e){
+        var t=window.getComputedStyle(e),n=t.display,r=(t.position,t.visibility,t.height,parseInt(t["max-height"]));
+        if("none"!==n&&"0"!==r)return e.offsetHeight;
+        e.style.height="auto",e.style.display="block",e.style.position="absolute",e.style.visibility="hidden";
+        var i=e.offsetHeight;
+        return e.style.height="",e.style.display="",e.style.position="",e.style.visibility="",i}
+      ,i=function(e){
+        t=1;
+        var n=r(e),i=e.style;
+        i.display="block",i.transition="max-height 0.25s ease-in-out",i.overflowY="hidden",""==i["max-height"]&&(i["max-height"]=0),0==parseInt(i["max-height"])?(i["max-height"]="0",setTimeout(function(){
+          i["max-height"]=n+"px"}
+,10)):i["max-height"]="0"}
+      ,a=function(r){
+        if(r.preventDefault(),!t){
+          var a=this.closest("[data-gjs=navbar]"),o=a.querySelector("[data-gjs=navbar-items]");
+          i(o),e||(o.addEventListener(n,function(){
+            t=0;
+            var e=o.style;
+            0==parseInt(e["max-height"])&&(e.display="",e["max-height"]="")}
+                                     ),e=1)}
+      };
+      "gjs-collapse"in this||this.addEventListener("click",a),this["gjs-collapse"]=1}
+     .bind(items[i]))();
+  }
+<\/script>
+      <style>
+    .navbar-items-c {
+  display: inline-block;
+  float: right;
+}
+.navbar {
+  color: rgb(221, 221, 221);
+  min-height: 50px;
+  width: 100%;
+  background-color: #122a48;
+  font-family: Comic Sans MS, cursive, sans-serif;
+  font-size: 14px;
+}
+.navbar-container {
+  max-width: 950px;
+  margin-top: 0px;
+  margin-right: auto;
+  margin-bottom: 0px;
+  margin-left: auto;
+  width: 95%;
+}
+.navbar-container::after {
+  content: "";
+  clear: both;
+  display: block;
+}
 
-      editor.Panels.addButton('options',[{
-  id:'open-code',
-  className:'fa fa-home',
-  command:'open-code',
-  togglabel:false,
-  attributes:{title:'Open code'}
-},
-]);
+.navbar-menu {
+  padding-top: 10px;
+  padding-right: 0px;
+  padding-bottom: 10px;
+  padding-left: 0px;
+  display: block;
+  float: right;
+  margin-top: 0px;
+  margin-right: 0px;
+  margin-bottom: 0px;
+  margin-left: 0px;
+}
+.navbar-menu-link {
+  margin-top: 0px;
+  margin-right: 0px;
+  margin-bottom: 0px;
+  margin-left: 0px;
+  color: inherit;
+  text-decoration-line: none;
+  text-decoration-style: initial;
+  text-decoration-color: initial;
+  display: inline-block;
+  padding-top: 2px;
+  padding-right: 9px;
+  padding-bottom: 2px;
+  padding-left: 9px;
+}
+.navbar-burger {
+  margin-top: 10px;
+  margin-right: 0px;
+  margin-bottom: 10px;
+  margin-left: 0px;
+  width: 45px;
+  padding-top: 5px;
+  padding-right: 10px;
+  padding-bottom: 5px;
+  padding-left: 10px;
+  display: none;
+  float: right;
+  cursor: pointer;
+}
+.navbar-burger-line {
+  padding-top: 1px;
+  padding-right: 1px;
+  padding-bottom: 1px;
+  padding-left: 1px;
+  background-color: white;
+  margin-top: 5px;
+  margin-right: 0px;
+  margin-bottom: 5px;
+margin-left: 0px;
+}
+#ib8uy {
+  padding: 25px 50px;
+  margin: 0 50px;
+  font-family: Comic Sans MS, cursive, sans-serif;
+  font-size: 20px;
+  text-align: center;
+  color: #ec6495;
+  float: none;
+  display: block;
+}
+@media (max-width: 768px) {
+  .navbar-burger {
+    display: block;
+  }
+  .navbar-items-c {
+    display: none;
+    width: 100%;
+  }
+  .navbar-menu {
+    width: 100%;
+  }
+  .navbar-menu-link {
+    display: block;
+  }
+}
+      </style>`
+      });
+      
+
     </script>
   </body>
 </html>
