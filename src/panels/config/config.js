@@ -1,5 +1,4 @@
 const swv = 'sw-visibility';
-const expt = 'export-template';
 const osm = 'open-sm';
 const otm = 'open-tm';
 const ola = 'open-layers';
@@ -45,12 +44,6 @@ export default {
           attributes: { title: 'Fullscreen' }
         },
         {
-          id: expt,
-          className: 'fa fa-code',
-          command: expt,
-          attributes: { title: 'View code' }
-        },
-        {
           id: 'clear',
           className: 'fa fa-trash',
           command: 'core:canvas-clear',
@@ -58,21 +51,15 @@ export default {
         },
         {
           id: redo,
-          className: 'fas fa-redo-alt',
+          className: 'fa fa-repeat',
           command: redo,
           attributes: { title: 'Redo' }
         },
         {
           id: undo,
-          className: 'fas fa-undo-alt',
+          className: 'fa fa-undo',
           command: undo,
           attributes: { title: 'Undo' }
-        },
-        {
-          id: ocd,
-          className: 'fa fa-code',
-          command: ocd,
-          attributes: { title: 'View code' }
         }
       ]
     },
