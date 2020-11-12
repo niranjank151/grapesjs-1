@@ -1,11 +1,13 @@
 const swv = 'sw-visibility';
-const expt = 'export-template';
 const osm = 'open-sm';
 const otm = 'open-tm';
 const ola = 'open-layers';
 const obl = 'open-blocks';
 const ful = 'fullscreen';
 const prv = 'preview';
+const undo = 'core:undo';
+const ocd = 'core:open-code';
+const redo = 'core:redo';
 
 export default {
   stylePrefix: 'pn-',
@@ -22,7 +24,7 @@ export default {
         {
           active: true,
           id: swv,
-          className: 'fa fa-square-o',
+          className: 'far fa-square',
           command: swv,
           context: swv,
           attributes: { title: 'View components' }
@@ -42,10 +44,22 @@ export default {
           attributes: { title: 'Fullscreen' }
         },
         {
-          id: expt,
-          className: 'fa fa-code',
-          command: expt,
-          attributes: { title: 'View code' }
+          id: 'clear',
+          className: 'fa fa-trash',
+          command: 'core:canvas-clear',
+          attributes: { title: 'Clear' }
+        },
+        {
+          id: redo,
+          className: 'fa fa-repeat',
+          command: redo,
+          attributes: { title: 'Redo' }
+        },
+        {
+          id: undo,
+          className: 'fa fa-undo',
+          command: undo,
+          attributes: { title: 'Undo' }
         }
       ]
     },

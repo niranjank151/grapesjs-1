@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Editor</title>
+    <link rel="stylesheet" href="dist/css/grapes.min.css">
+    <script src="dist/grapes.min.js"></script>
+    <link href="https://unpkg.com/grapesjs-component-code-editor@1.0.12/dist/grapesjs-component-code-editor.min.css" rel="stylesheet">
+
+<script src="https://unpkg.com/grapesjs-component-code-editor@1.0.12/dist/grapesjs-component-code-editor.min.js"></script>
+<script src="https://unpkg.com/grapesjs-plugin-forms@1.0.5/dist/grapesjs-plugin-forms.min.js"></script>
+ <script src="https://unpkg.com/grapesjs-blocks-basic@0.1.8/dist/grapesjs-blocks-basic.min.js"></script>
+
+    <style>
+      body,   
+      html {
+        height: 100%;
+        margin: 0;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="gjs" style="height:0px; overflow:hidden;">       
+      </div>
+
+
+    <script type="text/javascript">
+      var editor = grapesjs.init({
+        showOffsets: 1,
+        noticeOnUnload: 0,
+        container: '#gjs',
+        height: '100%',
+        fromElement: true,
+        plugins:['gjs-blocks-basic','grapesjs-component-code-editor', 'grapesjs-plugin-forms'],
+        pluginsOpts: {
+        'grapesjs-component-code-editor': { /* options */ }
+      }, 
+      canvas:{
+styles:['./dist/css/custom.style.css']
+      },
+     
+        storageManager: { autoload: 0 },
+        styleManager : {
+          sectors: [{
+              name: 'General',
+              open: false,
+              buildProps: ['float', 'display', 'position', 'top', 'right', 'left', 'bottom']
+            },{
+              name: 'Flex',
+              open: false,
+              buildProps: ['flex-direction', 'flex-wrap', 'justify-content', 'align-items', 'align-content', 'order', 'flex-basis', 'flex-grow', 'flex-shrink', 'align-self']
+            },{
+              name: 'Dimension',
+              open: false,
+              buildProps: ['width', 'height', 'max-width', 'min-height', 'margin', 'padding'],
+            },{
+              name: 'Typography',
+              open: false,
+              buildProps: ['font-family', 'font-size', 'font-weight', 'letter-spacing', 'color', 'line-height', 'text-shadow'],
+            },{
+              name: 'Decorations',
+              open: false,
+              buildProps: ['border-radius-c', 'background-color', 'border-radius', 'border', 'box-shadow', 'background'],
+            },{
+              name: 'Extra',
+              open: false,
+              buildProps: ['transition', 'perspective', 'transform'],
+            }
+          ],
+        },
+      });
+    //  editor.getComponents().add(`<link rel="stylesheet" href="./dist/css/custom.style.css" `);
+    editor.BlockManager.add('4 Columns', {
+    category: 'Basic',
+        label: '4 Columns',
+        attributes: {class:"gjs-fonts gjs-f-b3"},
+        content: `<div class='row'>
+        <div class='cell' ></div>
+        <div class='cell'></div>
+        <div class='cell'></div>
+        <div class='cell'></div>
+      </div>
+      <style>
+      .row{
+        display:table;
+        padding-top:10px;
+        padding-right:10px;
+        padding-bottom:10px;
+        padding-left:10px;
+        width:100%;
+      }
+      .cell{
+        width:8%;
+        display:table-cell;
+        height:75px;
+      }
+      @media (max-width: 768px){
+        .cell{
+          width:100%;
+          display:block;
+        }
+      }
+      </style>`
+      });
+
+      editor.BlockManager.add('6 Columns', {
+        category: 'Basic',
+        label: '6 Columns',
+        attributes: {class:'gjs-fonts gjs-f-b3'},
+        content: `<div class='row'>
+        <div class='cell' ></div>
+        <div class='cell'></div>
+        <div class='cell'></div>
+        <div class='cell'></div>
+        <div class='cell'></div>
+        <div class='cell'></div>
+      </div>
+      <style>
+      .row{
+        display:table;
+        padding-top:10px;
+        padding-right:10px;
+        padding-bottom:10px;
+        padding-left:10px;
+        width:100%;
+      }
+      .cell{
+        width:8%;
+        display:table-cell;
+        height:75px;
+      }
+      @media (max-width: 768px){
+        .cell{
+          width:100%;
+          display:block;
+        }
+      }
+      </style>`
+      });
+      
+      editor.BlockManager.add('Nav Bar', {
+        category: 'Extra',
+        label: 'Navbar',
+        attributes: {class:'fa fa-bars'},
+        content: `<div data-gjs="navbar" class="navbar">
+  <div class="navbar-container">
+    <a href="/" class="navbar-brand"></a>
+    <div id="i25a" class="navbar-burger">
+      <div class="navbar-burger-line">
+      </div>
+      <div class="navbar-burger-line">
+      </div>
+      <div class="navbar-burger-line">
+      </div>
+    </div>
+    <div data-gjs="navbar-items" class="navbar-items-c">
+      <nav data-gjs="navbar-menu" class="navbar-menu">
+        <a href="#" class="navbar-menu-link">Home</a>
+        <a href="#" class="navbar-menu-link">About</a>
+        <a href="#" class="navbar-menu-link">Contact</a>
+      </nav>
+    </div>
+  </div>
+</div>
+
+      <style>
+    .navbar-items-c {
+  display: inline-block;
+  float: right;
+}
+.navbar {
+  color: rgb(221, 221, 221);
+  min-height: 50px;
+  width: 100%;
+  background-color: #122a48;
+  font-family: Comic Sans MS, cursive, sans-serif;
+  font-size: 14px;
+}
+.navbar-container {
+  max-width: 950px;
+  margin-top: 0px;
+  margin-right: auto;
+  margin-bottom: 0px;
+  margin-left: auto;
+  width: 95%;
+}
+.navbar-container::after {
+  content: "";
+  clear: both;
+  display: block;
+}
+
+.navbar-menu {
+  padding-top: 10px;
+  padding-right: 0px;
+  padding-bottom: 10px;
+  padding-left: 0px;
+  display: block;
+  float: right;
+  margin-top: 0px;
+  margin-right: 0px;
+  margin-bottom: 0px;
+  margin-left: 0px;
+}
+.navbar-menu-link {
+  margin-top: 0px;
+  margin-right: 0px;
+  margin-bottom: 0px;
+  margin-left: 0px;
+  color: inherit;
+  text-decoration-line: none;
+  text-decoration-style: initial;
+  text-decoration-color: initial;
+  display: inline-block;
+  padding-top: 2px;
+  padding-right: 9px;
+  padding-bottom: 2px;
+  padding-left: 9px;
+}
+.navbar-burger {
+  margin-top: 10px;
+  margin-right: 0px;
+  margin-bottom: 10px;
+  margin-left: 0px;
+  width: 45px;
+  padding-top: 5px;
+  padding-right: 10px;
+  padding-bottom: 5px;
+  padding-left: 10px;
+  display: none;
+  float: right;
+  cursor: pointer;
+}
+.navbar-burger-line {
+  padding-top: 1px;
+  padding-right: 1px;
+  padding-bottom: 1px;
+  padding-left: 1px;
+  background-color: white;
+  margin-top: 5px;
+  margin-right: 0px;
+  margin-bottom: 5px;
+margin-left: 0px;
+}
+#ib8uy {
+  padding: 25px 50px;
+  margin: 0 50px;
+  font-family: Comic Sans MS, cursive, sans-serif;
+  font-size: 20px;
+  text-align: center;
+  color: #ec6495;
+  float: none;
+  display: block;
+}
+@media (max-width: 768px) {
+  .navbar-burger {
+    display: block;
+  }
+  .navbar-items-c {
+    display: none;
+    width: 100%;
+  }
+  .navbar-menu {
+    width: 100%;
+  }
+  .navbar-menu-link {
+    display: block;
+  }
+}
+      </style>`
+      });
+      
+      window.editor = editor;
+    </script>
+  </body>
+</html>
