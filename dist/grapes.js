@@ -40537,7 +40537,6 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 var swv = 'sw-visibility';
-var expt = 'export-template';
 var osm = 'open-sm';
 var otm = 'open-tm';
 var ola = 'open-layers';
@@ -40581,13 +40580,6 @@ var redo = 'core:redo';
         title: 'Fullscreen'
       }
     }, {
-      id: expt,
-      className: 'fa fa-code',
-      command: expt,
-      attributes: {
-        title: 'View code'
-      }
-    }, {
       id: 'clear',
       className: 'fa fa-trash',
       command: 'core:canvas-clear',
@@ -40596,24 +40588,17 @@ var redo = 'core:redo';
       }
     }, {
       id: redo,
-      className: 'fas fa-redo-alt',
+      className: 'fa fa-repeat',
       command: redo,
       attributes: {
         title: 'Redo'
       }
     }, {
       id: undo,
-      className: 'fas fa-undo-alt',
+      className: 'fa fa-undo',
       command: undo,
       attributes: {
         title: 'Undo'
-      }
-    }, {
-      id: ocd,
-      className: 'fa fa-code',
-      command: ocd,
-      attributes: {
-        title: 'View code'
       }
     }]
   }, {
