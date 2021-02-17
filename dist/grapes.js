@@ -25251,7 +25251,7 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
   var commands = {};
   var defaultCommands = {};
   var active = {};
-  var commandsDef = [['preview', 'Preview', 'preview'], ['resize', 'Resize', 'resize'], ['fullscreen', 'Fullscreen', 'fullscreen'], ['copy', 'CopyComponent'], ['paste', 'PasteComponent'], ['canvas-move', 'CanvasMove'], ['canvas-clear', 'CanvasClear'], ['open-code', 'ExportTemplate', 'export-template'], ['open-layers', 'OpenLayers', 'open-layers'], ['open-styles', 'OpenStyleManager', 'open-sm'], ['open-traits', 'OpenTraitManager', 'open-tm'], ['open-blocks', 'OpenBlocks', 'open-blocks'], ['open-assets', 'OpenAssets', 'open-assets'], ['component-select', 'SelectComponent', 'select-comp'], ['component-outline', 'SwitchVisibility', 'sw-visibility'], ['component-offset', 'ShowOffset', 'show-offset'], ['component-move', 'MoveComponent', 'move-comp'], ['component-next', 'ComponentNext'], ['component-prev', 'ComponentPrev'], ['component-enter', 'ComponentEnter'], ['component-exit', 'ComponentExit', 'select-parent'], ['component-delete', 'ComponentDelete'], ['component-style-clear', 'ComponentStyleClear'], ['component-drag', 'ComponentDrag']]; // Need it here as it would be used below
+  var commandsDef = [['preview', 'Preview', 'preview'], ['resize', 'Resize', 'resize'], ['fullscreen', 'Fullscreen', 'fullscreen'], ['copy', 'CopyComponent'], ['paste', 'PasteComponent'], ['canvas-move', 'CanvasMove'], ['canvas-clear', 'CanvasClear'], ['open-code', 'ExportTemplate', 'export-template'], ['open-layers', 'OpenLayers', 'open-layers'], ['open-styles', 'OpenStyleManager', 'open-sm'], ['open-analyticals', 'OpenAnalyticalManager', 'open-am'], ['open-traits', 'OpenTraitManager', 'open-tm'], ['open-blocks', 'OpenBlocks', 'open-blocks'], ['open-sections', 'OpenSections', 'open-sections'], ['open-assets', 'OpenAssets', 'open-assets'], ['component-select', 'SelectComponent', 'select-comp'], ['component-outline', 'SwitchVisibility', 'sw-visibility'], ['component-offset', 'ShowOffset', 'show-offset'], ['component-move', 'MoveComponent', 'move-comp'], ['component-next', 'ComponentNext'], ['component-prev', 'ComponentPrev'], ['component-enter', 'ComponentEnter'], ['component-exit', 'ComponentExit', 'select-parent'], ['component-delete', 'ComponentDelete'], ['component-style-clear', 'ComponentStyleClear'], ['component-drag', 'ComponentDrag']]; // Need it here as it would be used below
 
   var add = function add(id, obj) {
     if (Object(underscore__WEBPACK_IMPORTED_MODULE_2__["isFunction"])(obj)) obj = {
@@ -25683,12 +25683,16 @@ var map = {
 	"./Fullscreen.js": "./src/commands/view/Fullscreen.js",
 	"./MoveComponent": "./src/commands/view/MoveComponent.js",
 	"./MoveComponent.js": "./src/commands/view/MoveComponent.js",
+	"./OpenAnalyticalManager": "./src/commands/view/OpenAnalyticalManager.js",
+	"./OpenAnalyticalManager.js": "./src/commands/view/OpenAnalyticalManager.js",
 	"./OpenAssets": "./src/commands/view/OpenAssets.js",
 	"./OpenAssets.js": "./src/commands/view/OpenAssets.js",
 	"./OpenBlocks": "./src/commands/view/OpenBlocks.js",
 	"./OpenBlocks.js": "./src/commands/view/OpenBlocks.js",
 	"./OpenLayers": "./src/commands/view/OpenLayers.js",
 	"./OpenLayers.js": "./src/commands/view/OpenLayers.js",
+	"./OpenSections": "./src/commands/view/OpenSections.js",
+	"./OpenSections.js": "./src/commands/view/OpenSections.js",
 	"./OpenStyleManager": "./src/commands/view/OpenStyleManager.js",
 	"./OpenStyleManager.js": "./src/commands/view/OpenStyleManager.js",
 	"./OpenTraitManager": "./src/commands/view/OpenTraitManager.js",
@@ -27201,6 +27205,95 @@ var $ = backbone__WEBPACK_IMPORTED_MODULE_1___default.a.$;
 
 /***/ }),
 
+/***/ "./src/commands/view/OpenAnalyticalManager.js":
+/*!****************************************************!*\
+  !*** ./src/commands/view/OpenAnalyticalManager.js ***!
+  \****************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var backbone__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! backbone */ "./node_modules/backbone/backbone.js");
+/* harmony import */ var backbone__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(backbone__WEBPACK_IMPORTED_MODULE_0__);
+
+var $ = backbone__WEBPACK_IMPORTED_MODULE_0___default.a.$;
+/* harmony default export */ __webpack_exports__["default"] = ({
+  run: function run(em, sender) {
+    this.sender = sender;
+
+    if (!this.$cn) {
+      var config = em.getConfig(),
+          panels = em.Panels; // Main container
+
+      this.$cn = $('<div></div>'); // Secondary container
+
+      this.$cn2 = $('<div></div>');
+      this.$cn.append(this.$cn2); // Device Manager
+
+      var dvm = em.DeviceManager;
+
+      if (dvm && config.showDevices) {
+        var devicePanel = panels.addPanel({
+          id: 'devices-c'
+        });
+        devicePanel.set('appendContent', dvm.render()).trigger('change:appendContent');
+      } // Class Manager container
+
+
+      var clm = em.SelectorManager;
+      if (clm) this.$cn2.append(clm.render([]));
+      this.$cn2.append(em.AnalyticalManager.render());
+      var smConfig = em.AnalyticalManager.getConfig();
+      var pfx = smConfig.stylePrefix; // Create header
+
+      this.$header = $("<div class=\"".concat(pfx, "header\">").concat(em.t('analyticalManager.empty'), "</div>"));
+      this.$cn.append(this.$header); // Create panel if not exists
+
+      if (!panels.getPanel('views-container')) this.panel = panels.addPanel({
+        id: 'views-container'
+      });else this.panel = panels.getPanel('views-container'); // Add all containers to the panel
+
+      this.panel.set('appendContent', this.$cn).trigger('change:appendContent');
+      this.target = em.editor;
+      this.listenTo(this.target, 'component:toggled', this.toggleSm);
+    }
+
+    this.toggleSm();
+  },
+
+  /**
+   * Toggle Style Manager visibility
+   * @private
+   */
+  toggleSm: function toggleSm() {
+    var target = this.target,
+        sender = this.sender;
+    if (sender && sender.get && !sender.get('active')) return;
+
+    var _target$get$getConfig = target.get('SelectorManager').getConfig(),
+        componentFirst = _target$get$getConfig.componentFirst;
+
+    var selectedAll = target.getSelectedAll().length;
+
+    if (selectedAll === 1 || selectedAll > 1 && componentFirst) {
+      this.$cn2.show();
+      this.$header.hide();
+    } else {
+      this.$cn2.hide();
+      this.$header.show();
+    }
+  },
+  stop: function stop() {
+    // Hide secondary container if exists
+    if (this.$cn2) this.$cn2.hide(); // Hide header container if exists
+
+    if (this.$header) this.$header.hide();
+  }
+});
+
+/***/ }),
+
 /***/ "./src/commands/view/OpenAssets.js":
 /*!*****************************************!*\
   !*** ./src/commands/view/OpenAssets.js ***!
@@ -27335,6 +27428,42 @@ var $ = backbone__WEBPACK_IMPORTED_MODULE_0___default.a.$;
   stop: function stop() {
     var layers = this.layers;
     layers && (layers.style.display = 'none');
+  }
+});
+
+/***/ }),
+
+/***/ "./src/commands/view/OpenSections.js":
+/*!*******************************************!*\
+  !*** ./src/commands/view/OpenSections.js ***!
+  \*******************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = ({
+  run: function run(editor, sender) {
+    var bm = editor.SectionManager;
+    var pn = editor.Panels;
+
+    if (!this.sections) {
+      bm.render();
+      var id = 'views-container';
+      var sections = document.createElement('div');
+      var panels = pn.getPanel(id) || pn.addPanel({
+        id: id
+      });
+      sections.appendChild(bm.getContainer());
+      panels.set('appendContent', sections).trigger('change:appendContent');
+      this.sections = sections;
+    }
+
+    this.sections.style.display = 'block';
+  },
+  stop: function stop() {
+    var sections = this.sections;
+    sections && (sections.style.display = 'none');
   }
 });
 
@@ -37185,7 +37314,7 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
       var opts = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
       em.init(this, _objectSpread({}, c, {}, opts));
-      ['I18n', 'Utils', 'Config', 'Commands', 'Keymaps', 'Modal', 'Panels', 'Canvas', 'Parser', 'CodeManager', 'UndoManager', 'RichTextEditor', 'DomComponents', ['Components', 'DomComponents'], 'LayerManager', ['Layers', 'LayerManager'], 'CssComposer', ['Css', 'CssComposer'], 'StorageManager', ['Storage', 'StorageManager'], 'AssetManager', ['Assets', 'AssetManager'], 'BlockManager', ['Blocks', 'BlockManager'], 'TraitManager', ['Traits', 'TraitManager'], 'SelectorManager', ['Selectors', 'SelectorManager'], 'StyleManager', ['Styles', 'StyleManager'], 'DeviceManager', ['Devices', 'DeviceManager']].forEach(function (prop) {
+      ['I18n', 'Utils', 'Config', 'Commands', 'Keymaps', 'Modal', 'Panels', 'Canvas', 'Parser', 'CodeManager', 'UndoManager', 'RichTextEditor', 'DomComponents', ['Components', 'DomComponents'], 'LayerManager', ['Layers', 'LayerManager'], 'CssComposer', ['Css', 'CssComposer'], 'StorageManager', ['Storage', 'StorageManager'], 'AssetManager', ['Assets', 'AssetManager'], 'BlockManager', ['Blocks', 'BlockManager'], 'TraitManager', ['Traits', 'TraitManager'], 'SelectorManager', ['Selectors', 'SelectorManager'], 'StyleManager', ['Styles', 'StyleManager'], 'DeviceManager', ['Devices', 'DeviceManager'], 'SectionManager', ['Sections', 'SectionManager']].forEach(function (prop) {
         if (Array.isArray(prop)) {
           _this[prop[0]] = em.get(prop[1]);
         } else {
@@ -40555,6 +40684,23 @@ var redo = 'core:redo';
   }, {
     id: 'options',
     buttons: [{
+      id: 'publish',
+      className: 'btn-publish',
+      label: 'Publish',
+      command: 'publish',
+      attributes: {
+        title: 'Publish'
+      }
+    }, {
+      id: prv,
+      className: 'btn-preview',
+      command: prv,
+      context: prv,
+      label: 'Preview',
+      attributes: {
+        title: 'Preview'
+      }
+    }, {
       active: true,
       id: swv,
       className: 'far fa-square',
@@ -40562,14 +40708,6 @@ var redo = 'core:redo';
       context: swv,
       attributes: {
         title: 'View components'
-      }
-    }, {
-      id: prv,
-      className: 'fa fa-eye',
-      command: prv,
-      context: prv,
-      attributes: {
-        title: 'Preview'
       }
     }, {
       id: ful,
@@ -40599,42 +40737,6 @@ var redo = 'core:redo';
       command: undo,
       attributes: {
         title: 'Undo'
-      }
-    }]
-  }, {
-    id: 'views',
-    buttons: [{
-      id: osm,
-      className: 'fa fa-paint-brush',
-      command: osm,
-      active: true,
-      togglable: 0,
-      attributes: {
-        title: 'Open Style Manager'
-      }
-    }, {
-      id: otm,
-      className: 'fa fa-cog',
-      command: otm,
-      togglable: 0,
-      attributes: {
-        title: 'Settings'
-      }
-    }, {
-      id: ola,
-      className: 'fa fa-bars',
-      command: ola,
-      togglable: 0,
-      attributes: {
-        title: 'Open Layer Manager'
-      }
-    }, {
-      id: obl,
-      className: 'fa fa-th-large',
-      command: obl,
-      togglable: 0,
-      attributes: {
-        title: 'Open Blocks'
       }
     }]
   }],
