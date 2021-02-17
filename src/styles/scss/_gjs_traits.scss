@@ -35,9 +35,8 @@
   font-weight: lighter;
   align-items: center;
   text-align: left;
-
   &s {
-    font-size: $fontSizeS;
+    font-size: $fontSize;
   }
 
   .#{$app-prefix}label {

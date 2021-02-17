@@ -22,19 +22,27 @@ export default {
       id: 'options',
       buttons: [
         {
+          id: 'publish',
+          className: 'btn-publish',
+          label: 'Publish',
+          command: 'publish',
+          attributes: { title: 'Publish' }
+        },
+        {
+          id: prv,
+          className: 'btn-preview',
+          command: prv,
+          context: prv,
+          label: 'Preview',
+          attributes: { title: 'Preview' }
+        },
+        {
           active: true,
           id: swv,
           className: 'far fa-square',
           command: swv,
           context: swv,
           attributes: { title: 'View components' }
-        },
-        {
-          id: prv,
-          className: 'fa fa-eye',
-          command: prv,
-          context: prv,
-          attributes: { title: 'Preview' }
         },
         {
           id: ful,
@@ -60,40 +68,6 @@ export default {
           className: 'fa fa-undo',
           command: undo,
           attributes: { title: 'Undo' }
-        }
-      ]
-    },
-    {
-      id: 'views',
-      buttons: [
-        {
-          id: osm,
-          className: 'fa fa-paint-brush',
-          command: osm,
-          active: true,
-          togglable: 0,
-          attributes: { title: 'Open Style Manager' }
-        },
-        {
-          id: otm,
-          className: 'fa fa-cog',
-          command: otm,
-          togglable: 0,
-          attributes: { title: 'Settings' }
-        },
-        {
-          id: ola,
-          className: 'fa fa-bars',
-          command: ola,
-          togglable: 0,
-          attributes: { title: 'Open Layer Manager' }
-        },
-        {
-          id: obl,
-          className: 'fa fa-th-large',
-          command: obl,
-          togglable: 0,
-          attributes: { title: 'Open Blocks' }
         }
       ]
     }
