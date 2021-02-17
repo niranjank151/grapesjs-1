@@ -25280,17 +25280,18 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
      * @private
      */
     init: function init() {
+      var _this = this;
+
       var config = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
       c = _objectSpread({}, _config_config__WEBPACK_IMPORTED_MODULE_4__["default"], {}, config);
       em = c.em;
       var ppfx = c.pStylePrefix;
       if (ppfx) c.stylePrefix = ppfx + c.stylePrefix; // Load commands passed via configuration
 
-      for (var k in c.defaults) {
+      Object.keys(c.defaults).forEach(function (k) {
         var obj = c.defaults[k];
-        if (obj.id) this.add(obj.id, obj);
-      }
-
+        if (obj.id) _this.add(obj.id, obj);
+      });
       defaultCommands['tlb-delete'] = {
         run: function run(ed) {
           return ed.runCommand('core:component-delete');
@@ -33894,12 +33895,19 @@ var Component;
     var _this2 = this;
 
     var opts = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+
+    // Removing a parent component can cause this function
+    // to be called with an already removed child element
+    if (!removed) {
+      return;
+    }
+
     var domc = this.domc,
         em = this.em;
     var allByID = domc ? domc.allById() : {};
 
     if (!opts.temporary) {
-      // Remove the component from the gloabl list
+      // Remove the component from the global list
       var id = removed.getId();
       var sels = em.get('SelectorManager').getAll();
       var rules = em.get('CssComposer').getAll();
@@ -35049,11 +35057,19 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
     this.initComponents({
       avoidRender: 1
     });
-    this.events = _objectSpread({}, this.events, {}, draggableComponents && {
+    this.events = _objectSpread({}, this.events, {}, this.__isDraggable() && {
       dragstart: 'handleDragStart'
     });
     this.delegateEvents();
     !modelOpt.temporary && this.init(this._clbObj());
+  },
+  __isDraggable: function __isDraggable() {
+    var model = this.model,
+        config = this.config;
+    var _model$attributes = model.attributes,
+        _innertext = _model$attributes._innertext,
+        draggable = _model$attributes.draggable;
+    return config.draggableComponents && draggable && !_innertext;
   },
   _clbObj: function _clbObj() {
     var em = this.em,
@@ -35300,16 +35316,14 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
         $el = this.$el,
         el = this.el,
         config = this.config;
-    var _model$attributes = model.attributes,
-        highlightable = _model$attributes.highlightable,
-        textable = _model$attributes.textable,
-        type = _model$attributes.type,
-        _innertext = _model$attributes._innertext;
-    var draggableComponents = config.draggableComponents;
+    var _model$attributes2 = model.attributes,
+        highlightable = _model$attributes2.highlightable,
+        textable = _model$attributes2.textable,
+        type = _model$attributes2.type;
 
     var defaultAttr = _objectSpread({
       'data-gjs-type': type || 'default'
-    }, draggableComponents && !_innertext ? {
+    }, this.__isDraggable() ? {
       draggable: true
     } : {}, {}, highlightable ? {
       'data-highlightable': 1
@@ -36527,7 +36541,7 @@ var $ = backbone__WEBPACK_IMPORTED_MODULE_0___default.a.$;
   upArrowClick: function upArrowClick() {
     var model = this.model;
     var step = model.get('step');
-    var value = parseInt(model.get('value'), 10);
+    var value = parseFloat(model.get('value'));
     value = this.normalizeValue(value + step);
     var valid = this.validateInputValue(value);
     model.set('value', valid.value);
@@ -36540,7 +36554,7 @@ var $ = backbone__WEBPACK_IMPORTED_MODULE_0___default.a.$;
   downArrowClick: function downArrowClick() {
     var model = this.model;
     var step = model.get('step');
-    var value = parseInt(model.get('value'), 10);
+    var value = parseFloat(model.get('value'));
     var val = this.normalizeValue(value - step);
     var valid = this.validateInputValue(val);
     model.set('value', valid.value);
@@ -38424,7 +38438,8 @@ var logs = {
         Panels = _this$attributes.Panels,
         Canvas = _this$attributes.Canvas,
         Keymaps = _this$attributes.Keymaps,
-        RichTextEditor = _this$attributes.RichTextEditor;
+        RichTextEditor = _this$attributes.RichTextEditor,
+        LayerManager = _this$attributes.LayerManager;
     this.stopDefault();
     DomComponents.clear();
     CssComposer.clear();
@@ -38433,6 +38448,7 @@ var logs = {
     Canvas.getCanvasView().remove();
     Keymaps.removeAll();
     RichTextEditor.destroy();
+    LayerManager.destroy();
     this.view.remove();
     this.stopListening();
     this.clear({
@@ -39047,7 +39063,7 @@ var defaultConfig = {
   editors: editors,
   plugins: plugins,
   // Will be replaced on build
-  version: '0.16.22',
+  version: '<# VERSION #>',
 
   /**
    * Initialize the editor with passed options
@@ -39916,6 +39932,9 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
     },
     render: function render() {
       return layers.render().el;
+    },
+    destroy: function destroy() {
+      return layers.remove();
     }
   };
 });
@@ -40518,13 +40537,15 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 var swv = 'sw-visibility';
-var expt = 'export-template';
 var osm = 'open-sm';
 var otm = 'open-tm';
 var ola = 'open-layers';
 var obl = 'open-blocks';
 var ful = 'fullscreen';
 var prv = 'preview';
+var undo = 'core:undo';
+var ocd = 'core:open-code';
+var redo = 'core:redo';
 /* harmony default export */ __webpack_exports__["default"] = ({
   stylePrefix: 'pn-',
   // Default panels fa-sliders for features
@@ -40536,7 +40557,7 @@ var prv = 'preview';
     buttons: [{
       active: true,
       id: swv,
-      className: 'fa fa-square-o',
+      className: 'far fa-square',
       command: swv,
       context: swv,
       attributes: {
@@ -40559,11 +40580,25 @@ var prv = 'preview';
         title: 'Fullscreen'
       }
     }, {
-      id: expt,
-      className: 'fa fa-code',
-      command: expt,
+      id: 'clear',
+      className: 'fa fa-trash',
+      command: 'core:canvas-clear',
       attributes: {
-        title: 'View code'
+        title: 'Clear'
+      }
+    }, {
+      id: redo,
+      className: 'fa fa-repeat',
+      command: redo,
+      attributes: {
+        title: 'Redo'
+      }
+    }, {
+      id: undo,
+      className: 'fa fa-undo',
+      command: undo,
+      attributes: {
+        title: 'Undo'
       }
     }]
   }, {
@@ -45080,7 +45115,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _config_config__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./config/config */ "./src/style_manager/config/config.js");
 /* harmony import */ var _model_Sectors__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./model/Sectors */ "./src/style_manager/model/Sectors.js");
 /* harmony import */ var _model_Properties__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./model/Properties */ "./src/style_manager/model/Properties.js");
-/* harmony import */ var _view_SectorsView__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./view/SectorsView */ "./src/style_manager/view/SectorsView.js");
+/* harmony import */ var _model_PropertyFactory__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./model/PropertyFactory */ "./src/style_manager/model/PropertyFactory.js");
+/* harmony import */ var _view_SectorsView__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./view/SectorsView */ "./src/style_manager/view/SectorsView.js");
 
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
@@ -45126,11 +45162,14 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 
 
+
 /* harmony default export */ __webpack_exports__["default"] = (function () {
   var c = {};
   var properties;
   var sectors, SectView;
   return {
+    PropertyFactory: Object(_model_PropertyFactory__WEBPACK_IMPORTED_MODULE_5__["default"])(),
+
     /**
      * Name of the module
      * @type {String}
@@ -45158,7 +45197,7 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
       if (ppfx) c.stylePrefix = ppfx + c.stylePrefix;
       properties = new _model_Properties__WEBPACK_IMPORTED_MODULE_4__["default"]();
       sectors = new _model_Sectors__WEBPACK_IMPORTED_MODULE_3__["default"]([], c);
-      SectView = new _view_SectorsView__WEBPACK_IMPORTED_MODULE_5__["default"]({
+      SectView = new _view_SectorsView__WEBPACK_IMPORTED_MODULE_6__["default"]({
         collection: sectors,
         target: c.em,
         config: c
@@ -45410,28 +45449,28 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
      *                            passed entity
      *@example
      * styleManager.addType('my-custom-prop', {
-        create({ props, change }) {
-          const el = document.createElement('div');
-          el.innerHTML = '<input type="range" class="my-input" min="10" max="50"/>';
-          const inputEl = el.querySelector('.my-input');
-          inputEl.addEventListener('change', event => change({ event })); // change will trigger the emit
-          inputEl.addEventListener('input', event => change({ event, complete: false }));
-          return el;
-        },
-         emit({ props, updateStyle }, { event, complete }) {
-          const { value } = event.target;
-          const valueRes = value + 'px';
-          // Pass a string value for the exact CSS property or an object containing multiple properties
-          // eg. updateStyle({ [props.property]: valueRes, color: 'red' });
-          updateStyle(valueRes, { complete });
-        },
-         update({ value, el }) {
-          el.querySelector('.my-input').value = parseInt(value, 10);
-        },
-         destroy() {
-          // In order to prevent memory leaks, use this method to clean, eventually, created instances, global event listeners, etc.
-        }
-      })
+     *    create({ props, change }) {
+     *      const el = document.createElement('div');
+     *      el.innerHTML = '<input type="range" class="my-input" min="10" max="50"/>';
+     *      const inputEl = el.querySelector('.my-input');
+     *      inputEl.addEventListener('change', event => change({ event })); // change will trigger the emit
+     *      inputEl.addEventListener('input', event => change({ event, complete: false }));
+     *      return el;
+     *    },
+     *    emit({ props, updateStyle }, { event, complete }) {
+     *      const { value } = event.target;
+     *      const valueRes = value + 'px';
+     *      // Pass a string value for the exact CSS property or an object containing multiple properties
+     *      // eg. updateStyle({ [props.property]: valueRes, color: 'red' });
+     *      updateStyle(valueRes, { complete });
+     *    },
+     *    update({ value, el }) {
+     *      el.querySelector('.my-input').value = parseInt(value, 10);
+     *    },
+     *    destroy() {
+     *      // In order to prevent memory leaks, use this method to clean, eventually, created instances, global event listeners, etc.
+     *    }
+     *})
      */
     addType: function addType(id, definition) {
       properties.addType(id, definition);
@@ -49498,7 +49537,7 @@ var clearProp = 'data-clear-style';
     var value = model.getFullValue();
     var onChange = this.onChange; // Check if component is allowed to be styled
 
-    if (!target || !this.isTargetStylable(target) || !this.isComponentStylable()) {
+    if (!target || !this.isComponentStylable()) {
       return;
     } // Avoid target update if the changes comes from it
 

@@ -1,131 +1,142 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <title>GrapesJS</title>
-    <link rel="stylesheet" href="dist/css/grapes.min.css">
-    <script src="dist/grapes.min.js"></script>
-    <link href="https://unpkg.com/grapesjs-component-code-editor.min.css" rel="stylesheet">
-<script src="https://unpkg.com/grapesjs-component-code-editor"></script>
-<script src="https://unpkg.com/grapesjs-plugin-forms"></script>
- 
-    <style>
-      body,
-      html {
-        height: 100%;
-        margin: 0;
-      }
-    </style>
-  </head>
 
-  <body>
-    <div id="gjs" style="height:0px; overflow:hidden;">       
+<head>
+  <meta charset="utf-8">
+  <title>Editor</title>
+  <link rel="stylesheet" href="dist/css/grapes.min.css">
+  <script src="dist/grapes.min.js"></script>
+  <link href="https://unpkg.com/grapesjs-component-code-editor@1.0.12/dist/grapesjs-component-code-editor.min.css"
+    rel="stylesheet">
+  <script
+    src="https://unpkg.com/grapesjs-component-code-editor@1.0.12/dist/grapesjs-component-code-editor.min.js"></script>
+  <script src="https://unpkg.com/grapesjs-plugin-forms@1.0.5/dist/grapesjs-plugin-forms.min.js"></script>
+  <script src="https://unpkg.com/grapesjs-blocks-basic@0.1.8/dist/grapesjs-blocks-basic.min.js"></script>
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body,
+    html {
+      height: 100%;
+      margin: 0;
+    }
+
+    .traits-container {
+      overflow: scroll;
+      height: 100%
+    }
+
+    .row {
+      margin: 0;
+    }
+
+    .row .side {
+      float: left !important;
+      width: 20%;
+      height: 100%
+    }
+
+    .row .main {
+      float: left !important;
+      width: 80%;
+      height: 100%
+    }
+
+    .row:after {
+      content: "";
+      display: table;
+      clear: both;
+    }
+
+    .gjs-cv-canvas {
+      width: 100%;
+
+    }
+
+    .row .blocks {
+      height: 370px;
+      min-height: 370px;
+      width: 260px;
+    }
+
+    .row .styles-container {
+      height: 370px;
+      min-height: 370px;
+      width: 260px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container-fluid">
+    <div class="row" style="height: 620px;">
+      <div class="side">
+        <div class="row" style="border: 1px solid black; height: 30%;">
+          <h5 style="text-align: center;">Component Settings</h5 style="text-align: center;">
+          <div class="trait-manager"></div>
+        </div>
+        <div class="row" style="border: 1px solid black; height: 70%; ">
+          <ul class="nav nav-tabs " role="tablist">
+            <li class="active"><a role="tab" data-toggle="tab" href="#block">Blocks</a></li>
+            <li><a href="#style-manager" role="tab" data-toggle="tab">Style</a></li>
+          </ul>
+          <div class="tab-content" style="overflow: auto;">
+            <div id="block" role="tabpanel" class="tab-pane fade in active">
+              <div id="blocks" class="blocks"></div>
+            </div>
+            <div id="style-manager" role="tabpanel" class="tab-pane fade">
+              <div class="styles-container">
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-      <style>
-        .panel {
-          width: 90%;
-          max-width: 700px;
-          border-radius: 3px;
-          padding: 30px 20px;
-          margin: 150px auto 0px;
-          background-color: #d983a6;
-          box-shadow: 0px 3px 10px 0px rgba(0,0,0,0.25);
-          color:rgba(255,255,255,0.75);
-          font: caption;
-          font-weight: 100;
-        }
-
-        .welcome {
-          text-align: center;
-          font-weight: 100;
-          margin: 0px;
-        }
-
-        .logo {
-          width: 70px;
-          height: 70px;
-          vertical-align: middle;
-        }
-
-        .logo path {
-          pointer-events: none;
-          fill: none;
-          stroke-linecap: round;
-          stroke-width: 7;
-          stroke: #fff
-        }
-
-        .big-title {
-          text-align: center;
-          font-size: 3.5rem;
-          margin: 15px 0;
-        }
-
-        .description {
-          text-align: justify;
-          font-size: 1rem;
-          line-height: 1.5rem;
-        }
-
-      </style>
+      <div class="main" style="border: 1px solid black;">
+        <div id="gjs"></div>
+      </div>
     </div>
+  </div>
 
-    <script type="text/javascript">
-      var editor = grapesjs.init({
-        showOffsets: 1,
-        noticeOnUnload: 0,
-        container: '#gjs',
-        height: '100%',
-        fromElement: true,
-        plugins:['grapesjs-component-code-editor', 'grapesjs-plugin-forms'],
-        pluginsOpts: {
+  <script type="text/javascript">
+    $(document).ready(function () {
+      $(".nav-tabs a").click(function () {
+        $(this).tab('show');
+        return false;
+      });
+    });
+    var editor = grapesjs.init({
+      showOffsets: 1,
+      noticeOnUnload: 0,
+      container: '#gjs',
+      height: '100%',
+      fromElement: true,
+      plugins: ['gjs-blocks-basic', 'grapesjs-component-code-editor', 'grapesjs-plugin-forms'],
+      pluginsOpts: {
         'grapesjs-component-code-editor': { /* options */ }
       },
-        storageManager: { autoload: 0 },
-        styleManager : {
-          sectors: [{
-              name: 'General',
-              open: false,
-              buildProps: ['float', 'display', 'position', 'top', 'right', 'left', 'bottom']
-            },{
-              name: 'Flex',
-              open: false,
-              buildProps: ['flex-direction', 'flex-wrap', 'justify-content', 'align-items', 'align-content', 'order', 'flex-basis', 'flex-grow', 'flex-shrink', 'align-self']
-            },{
-              name: 'Dimension',
-              open: false,
-              buildProps: ['width', 'height', 'max-width', 'min-height', 'margin', 'padding'],
-            },{
-              name: 'Typography',
-              open: false,
-              buildProps: ['font-family', 'font-size', 'font-weight', 'letter-spacing', 'color', 'line-height', 'text-shadow'],
-            },{
-              name: 'Decorations',
-              open: false,
-              buildProps: ['border-radius-c', 'background-color', 'border-radius', 'border', 'box-shadow', 'background'],
-            },{
-              name: 'Extra',
-              open: false,
-              buildProps: ['transition', 'perspective', 'transform'],
-            }
-          ],
-        },
-      });
+      traitManager: {
+        appendTo: '.trait-manager'
+      },
+      storageManager: { autoload: 0 },
+      styleManager: {
+        appendTo: ".styles-container"
+      },
+      blockManager: {
+        appendTo: "#blocks"
+      },
+    });
 
-      editor.BlockManager.add('testBlock', {
-        label: 'Block',
-        attributes: { class:'gjs-fonts gjs-f-b1' },
-        content: `<div style="padding-top:50px; padding-bottom:50px; text-align:center">Test block</div>`
-      })
+    editor.Panels.removePanel('views');
+    editor.Panels.removePanel('commands');
 
-      editor.Panels.addButton('options',[{
-  id:'open-code',
-  className:'fa fa-home',
-  command:'open-code',
-  togglabel:false,
-  attributes:{title:'Open code'}
-},
-]);
-    </script>
-  </body>
+  </script>
+</body>
+
 </html>

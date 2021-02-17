@@ -1,12 +1,13 @@
 const swv = 'sw-visibility';
-const expt = 'export-template';
 const osm = 'open-sm';
 const otm = 'open-tm';
 const ola = 'open-layers';
 const obl = 'open-blocks';
 const ful = 'fullscreen';
 const prv = 'preview';
-const redo = 'code:redo';
+const undo = 'core:undo';
+const ocd = 'core:open-code';
+const redo = 'core:redo';
 
 export default {
   stylePrefix: 'pn-',
@@ -21,19 +22,27 @@ export default {
       id: 'options',
       buttons: [
         {
-          active: true,
-          id: swv,
-          className: 'fa fa-square-o',
-          command: swv,
-          context: swv,
-          attributes: { title: 'View components' }
+          id: 'publish',
+          className: 'btn-publish',
+          label: 'Publish',
+          command: 'publish',
+          attributes: { title: 'Publish' }
         },
         {
           id: prv,
-          className: 'fa fa-eye',
+          className: 'btn-preview',
           command: prv,
           context: prv,
+          label: 'Preview',
           attributes: { title: 'Preview' }
+        },
+        {
+          active: true,
+          id: swv,
+          className: 'far fa-square',
+          command: swv,
+          context: swv,
+          attributes: { title: 'View components' }
         },
         {
           id: ful,
@@ -43,50 +52,22 @@ export default {
           attributes: { title: 'Fullscreen' }
         },
         {
-          id: expt,
-          className: 'fa fa-code',
-          command: expt,
-          attributes: { title: 'View code' }
+          id: 'clear',
+          className: 'fa fa-trash',
+          command: 'core:canvas-clear',
+          attributes: { title: 'Clear' }
         },
         {
           id: redo,
-          className: 'fa fa-redo-alt',
+          className: 'fa fa-repeat',
           command: redo,
           attributes: { title: 'Redo' }
-        }
-      ]
-    },
-    {
-      id: 'views',
-      buttons: [
-        {
-          id: osm,
-          className: 'fa fa-paint-brush',
-          command: osm,
-          active: true,
-          togglable: 0,
-          attributes: { title: 'Open Style Manager' }
         },
         {
-          id: otm,
-          className: 'fa fa-cog',
-          command: otm,
-          togglable: 0,
-          attributes: { title: 'Settings' }
-        },
-        {
-          id: ola,
-          className: 'fa fa-bars',
-          command: ola,
-          togglable: 0,
-          attributes: { title: 'Open Layer Manager' }
-        },
-        {
-          id: obl,
-          className: 'fa fa-th-large',
-          command: obl,
-          togglable: 0,
-          attributes: { title: 'Open Blocks' }
+          id: undo,
+          className: 'fa fa-undo',
+          command: undo,
+          attributes: { title: 'Undo' }
         }
       ]
     }
